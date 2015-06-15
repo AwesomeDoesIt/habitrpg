@@ -5,8 +5,8 @@
  */
 
 angular.module('habitrpg')
-  .controller("AuthCtrl", ['$scope', '$rootScope', 'User', '$http', '$location', '$window','ApiUrl', '$modal',
-    function($scope, $rootScope, User, $http, $location, $window, ApiUrl, $modal) {
+  .controller("AuthCtrl", ['$scope', '$rootScope', 'User', '$http', '$location', '$window','ApiUrl', '$modal','Analytics',
+    function($scope, $rootScope, User, $http, $location, $window, ApiUrl, $modal, Analytics) {
 
       $scope.logout = function() {
         localStorage.clear();
@@ -54,7 +54,7 @@ angular.module('habitrpg')
               mixpanel.register({'authType':'email','email':data.auth.local.email})
             }
             mixpanel.register({'UUID':data._id,'language':data.preferences.language});
-            mixpanel.track('Registration');
+            Analytics.track('Register');
           }
         }).error(errorAlert);
       };
@@ -70,7 +70,7 @@ angular.module('habitrpg')
             if (status == 200) {
               mixpanel.identify(data.id);
               mixpanel.register({'UUID':data._id});
-              mixpanel.track('Login');
+              Analytics.track('Login');
             }
           }).error(errorAlert);
       };
@@ -146,7 +146,7 @@ angular.module('habitrpg')
               if (status == 200) {
                 mixpanel.identify(data.id);
                 mixpanel.register({'UUID':data._id});
-                mixpanel.track('Login');
+                Analytics.track('Login');
               }
               runAuth(data.id, data.token);
             }).error(errorAlert);
